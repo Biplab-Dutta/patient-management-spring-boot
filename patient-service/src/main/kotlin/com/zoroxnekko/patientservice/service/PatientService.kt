@@ -2,6 +2,7 @@ package com.zoroxnekko.patientservice.service
 
 import com.zoroxnekko.patientservice.dto.PatientRequestDTO
 import com.zoroxnekko.patientservice.dto.PatientResponseDTO
+import com.zoroxnekko.patientservice.exception.EmailAlreadyExistsException
 import com.zoroxnekko.patientservice.mapper.toDTO
 import com.zoroxnekko.patientservice.mapper.toEntity
 import com.zoroxnekko.patientservice.repository.PatientRepository
@@ -17,6 +18,10 @@ class PatientService(
     }
 
     fun createPatient(patientRequestDTO: PatientRequestDTO): PatientResponseDTO {
+        if(repository.existsByEmail(patientRequestDTO.email)) {
+           throw EmailAlreadyExistsException("A patient with the email ${patientRequestDTO.email} already exists")
+        }
+
         val patient = repository.save(patientRequestDTO.toEntity())
         return patient.toDTO()
     }
