@@ -34,8 +34,12 @@ class PatientService(
             PatientNotFoundException("Patient not found with id $id")
         }
 
+        if (repository.existsByEmailAndIdNot(email = patientRequestDTO.email!!, id = id)) {
+            throw EmailAlreadyExistsException("A patient with the email ${patientRequestDTO.email} already exists")
+        }
+
         patient.name = patientRequestDTO.name!!
-        patient.email = patientRequestDTO.email!!
+        patient.email = patientRequestDTO.email
         patient.address = patientRequestDTO.address!!
         patient.dateOfBirth = LocalDate.parse(patientRequestDTO.dateOfBirth!!)
 
