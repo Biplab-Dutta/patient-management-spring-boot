@@ -2,14 +2,13 @@ package com.zoroxnekko.patientservice.controller
 
 import com.zoroxnekko.patientservice.dto.PatientRequestDTO
 import com.zoroxnekko.patientservice.dto.PatientResponseDTO
+import com.zoroxnekko.patientservice.dto.validators.CreatePatientValidationGroup
 import com.zoroxnekko.patientservice.service.PatientService
-import jakarta.validation.Valid
+import jakarta.validation.groups.Default
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/patients")
@@ -23,8 +22,20 @@ class PatientController(
     }
 
     @PostMapping
-    fun createPatient(@Valid @RequestBody patientRequestDTO: PatientRequestDTO): ResponseEntity<PatientResponseDTO> {
+    fun createPatient(
+        @Validated(Default::class, CreatePatientValidationGroup::class)
+        @RequestBody patientRequestDTO: PatientRequestDTO
+    ): ResponseEntity<PatientResponseDTO> {
         val patientResponseDTO = service.createPatient(patientRequestDTO)
+        return ResponseEntity.ok().body(patientResponseDTO)
+    }
+
+    @PutMapping("/{id}")
+    fun updatePatient(
+        @PathVariable id: UUID,
+        @Validated(Default::class) @RequestBody patientRequestDTO: PatientRequestDTO,
+    ): ResponseEntity<PatientResponseDTO> {
+        val patientResponseDTO = service.updatePatient(id, patientRequestDTO)
         return ResponseEntity.ok().body(patientResponseDTO)
     }
 }
