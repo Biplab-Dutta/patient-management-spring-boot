@@ -17,10 +17,10 @@ fun Patient.toDTO(): PatientResponseDTO {
 
 fun PatientRequestDTO.toEntity(): Patient {
     return Patient(
-        name = name,
-        email = email,
-        address = address,
-        dateOfBirth = LocalDate.parse(dateOfBirth),
-        registeredDate = LocalDate.parse(registeredDate),
+        name = name!!,
+        email = email!!,
+        address = address!!,
+        dateOfBirth = LocalDate.parse(dateOfBirth!!),
+        registeredDate = LocalDate.parse(registeredDate!!),
     )
 }
