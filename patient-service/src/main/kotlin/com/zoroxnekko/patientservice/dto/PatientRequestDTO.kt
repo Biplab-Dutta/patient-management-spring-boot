@@ -1,5 +1,6 @@
 package com.zoroxnekko.patientservice.dto
 
+import com.zoroxnekko.patientservice.dto.validators.CreatePatientValidationGroup
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -7,18 +8,21 @@ import jakarta.validation.constraints.Size
 data class PatientRequestDTO(
     @field:NotBlank(message = "Name is required")
     @field:Size(max = 100, message = "Name cannot exceed 100 characters")
-    val name: String,
+    val name: String?,
 
     @field:NotBlank(message = "Email is required")
     @field:Email(message = "Email should be valid")
-    val email: String,
+    val email: String?,
 
     @field:NotBlank(message = "Address is required")
-    val address: String,
+    val address: String?,
 
     @field:NotBlank(message = "Date of birth is required")
-    val dateOfBirth: String,
+    val dateOfBirth: String?,
 
-    @field:NotBlank(message = "Registered date is required")
-    val registeredDate: String,
+    @field:NotBlank(
+        groups = [CreatePatientValidationGroup::class],
+        message = "Registered date is required",
+    )
+    val registeredDate: String?,
 )
