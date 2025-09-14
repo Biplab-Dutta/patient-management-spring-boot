@@ -38,4 +38,10 @@ class PatientController(
         val patientResponseDTO = service.updatePatient(id, patientRequestDTO)
         return ResponseEntity.ok().body(patientResponseDTO)
     }
+
+    @DeleteMapping("/{id}")
+    fun deletePatient(@PathVariable id: UUID): ResponseEntity<Unit> {
+        service.deletePatient(id)
+        return ResponseEntity.noContent().build()
+    }
 }

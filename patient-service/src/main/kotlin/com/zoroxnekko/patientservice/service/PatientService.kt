@@ -46,4 +46,8 @@ class PatientService(
         val updatedPatient = repository.save(patient)
         return updatedPatient.toDTO()
     }
+
+    fun deletePatient(id: UUID) {
+        repository.deleteById(id)
+    }
 }
