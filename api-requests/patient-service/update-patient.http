@@ -1,0 +1,12 @@
+### Updates an existing patient enti
+PUT http://localhost:4000/patients/123e4567-e89b-12d3-a456-426614174000
+Content-Type: application/json
+
+{
+  "name": "Biplab Dutta New",
+  "email": "biplab@gmail.com",
+  "address": "Biratnagar",
+  "dateOfBirth": "2000-01-01"
+}
+
+###
