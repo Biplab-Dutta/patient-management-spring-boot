@@ -1,0 +1,3 @@
+package com.zoroxnekko.patientservice.dto.validators
+
+interface CreatePatientValidationGroup
