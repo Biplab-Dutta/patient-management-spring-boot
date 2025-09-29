@@ -10,9 +10,6 @@ plugins {
 }
 
 val springGrpcVersion by extra("0.11.0")
-val grpcVersion by extra("1.53.0")
-val grpcKotlinVersion by extra("1.3.0")
-val protobufVersion by extra("3.21.12")
 
 group = "com.zoroxnekko"
 version = "0.0.1-SNAPSHOT"
@@ -35,11 +32,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.grpc:grpc-netty-shaded:1.75.0")
+    implementation("io.grpc:grpc-protobuf:1.75.0")
+    implementation("io.grpc:grpc-stub:1.75.0")
     implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
-    implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
-    implementation("io.grpc:grpc-protobuf:$grpcVersion")
-    implementation("io.grpc:grpc-kotlin-stub:$grpcKotlinVersion")
-    implementation("com.google.protobuf:protobuf-kotlin:$protobufVersion")
+    implementation("com.google.protobuf:protobuf-java:4.32.1")
     compileOnly("org.apache.tomcat:tomcat-annotations-api:11.0.11")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -65,21 +62,17 @@ tasks.withType<Test> {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:$protobufVersion"
+        artifact = "com.google.protobuf:protoc:4.32.1"
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
-        }
-        id("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:$grpcKotlinVersion:jdk8@jar"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.75.0"
         }
     }
     generateProtoTasks {
         ofSourceSet("main").forEach {
             it.plugins {
-                id("grpc")
-                id("grpckt")
+                id("grpc") { }
             }
         }
     }
