@@ -26,6 +26,9 @@ repositories {
 }
 
 dependencies {
+    if (JavaVersion.current().isJava9Compatible()) {
+        implementation("javax.annotation:javax.annotation-api:1.3.1")
+    }
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
