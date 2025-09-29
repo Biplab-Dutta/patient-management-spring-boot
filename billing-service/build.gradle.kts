@@ -81,9 +81,6 @@ protobuf {
                 id("grpc")
                 id("grpckt")
             }
-            it.builtins {
-                create("kotlin")
-            }
         }
     }
 }
