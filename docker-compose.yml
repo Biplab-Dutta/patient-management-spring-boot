@@ -17,6 +17,17 @@ services:
     networks:
       - internal
 
+  billing-service:
+    build:
+      context: ./billing-service
+    image: billing-service:latest
+    container_name: billing-service
+    ports:
+      - "4001:4001"
+      - "9001:9001"
+    networks:
+      - internal
+
   postgres:
     image: postgres:18
     container_name: patient-service-db
