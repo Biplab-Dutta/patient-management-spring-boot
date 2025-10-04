@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package billing;
+package billing_server;
 
 option java_multiple_files = true;
 option java_package = "com.zoroxnekko.billingservice.grpc";
