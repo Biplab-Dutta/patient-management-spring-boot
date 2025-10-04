@@ -28,6 +28,7 @@ repositories {
 }
 
 val springGrpcVersion = "0.11.0"
+val grpcKotlinVersion = "1.4.3"
 
 dependencyManagement {
     imports {
@@ -47,6 +48,7 @@ dependencies {
     implementation("io.grpc:grpc-netty-shaded")
     implementation("io.grpc:grpc-protobuf")
     implementation("io.grpc:grpc-stub")
+    implementation("io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}")
     implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
     implementation("com.google.protobuf:protobuf-java")
     compileOnly("org.apache.tomcat:tomcat-annotations-api")
@@ -95,11 +97,15 @@ protobuf {
                 .importedProperties["grpc.version"]
             artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
         }
+        id("grpckt") {
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:${grpcKotlinVersion}:jdk8@jar"
+        }
     }
     generateProtoTasks {
         ofSourceSet("main").forEach {
             it.plugins {
-                id("grpc") {}
+                id("grpc")
+                id("grpckt")
             }
         }
     }
