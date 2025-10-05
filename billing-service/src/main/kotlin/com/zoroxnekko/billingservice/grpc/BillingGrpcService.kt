@@ -13,6 +13,7 @@ class BillingGrpcService : BillingServiceGrpcKt.BillingServiceCoroutineImplBase(
     override suspend fun createBillingAccount(request: BillingRequest): BillingResponse {
         log.info("createBillingAccount request received $request")
 
+        // TODO(Biplab): Remove hardcoded values with proper implementation
         return BillingResponse.newBuilder()
             .setAccountId("233")
             .setStatus("ACTIVE")
