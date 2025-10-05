@@ -1,10 +1,9 @@
 syntax = "proto3";
 
-package billing_client;
+package billing;
 
 option java_multiple_files = true;
-option java_package = "com.zoroxnekko.patientservice.grpc";
-option java_outer_classname = "BillingServiceProto";
+option java_package = "com.zoroxnekko.billing.grpc";
 
 service BillingService {
   rpc CreateBillingAccount(BillingRequest) returns (BillingResponse);
