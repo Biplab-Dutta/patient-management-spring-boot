@@ -27,7 +27,7 @@ class PatientController(
 
     @PostMapping
     @Operation(summary = "Create a new patient")
-    fun createPatient(
+    suspend fun createPatient(
         @Validated(Default::class, CreatePatientValidationGroup::class)
         @RequestBody patientRequestDTO: PatientRequestDTO
     ): ResponseEntity<PatientResponseDTO> {
