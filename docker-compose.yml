@@ -17,6 +17,7 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
       - postgres
+      - kafka
     networks:
       - internal
 
@@ -42,6 +43,8 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     networks:
       - internal
+    depends_on:
+      - kafka
 
   postgres:
     image: postgres:18
