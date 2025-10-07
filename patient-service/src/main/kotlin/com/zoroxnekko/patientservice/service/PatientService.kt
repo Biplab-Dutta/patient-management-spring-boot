@@ -5,6 +5,7 @@ import com.zoroxnekko.patientservice.dto.PatientResponseDTO
 import com.zoroxnekko.patientservice.exception.EmailAlreadyExistsException
 import com.zoroxnekko.patientservice.exception.PatientNotFoundException
 import com.zoroxnekko.patientservice.grpc.BillingServiceGrpcClient
+import com.zoroxnekko.patientservice.kafka.KafkaProducer
 import com.zoroxnekko.patientservice.mapper.toDTO
 import com.zoroxnekko.patientservice.mapper.toEntity
 import com.zoroxnekko.patientservice.repository.PatientRepository
@@ -16,6 +17,7 @@ import java.util.*
 class PatientService(
     private val repository: PatientRepository,
     private val billingServiceGrpcClient: BillingServiceGrpcClient,
+    private val kafkaProducer: KafkaProducer,
 ) {
     fun getPatients(): List<PatientResponseDTO> {
         val patients = repository.findAll()
@@ -34,6 +36,8 @@ class PatientService(
             patient.name,
             patient.email
         )
+
+        kafkaProducer.sendEvent(patient)
 
         return patient.toDTO()
     }
