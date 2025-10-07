@@ -1,8 +1,12 @@
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.7"
+    kotlin("plugin.allopen") version "1.9.25"
+    id("com.google.protobuf") version "0.9.5"
 }
 
 group = "com.zoroxnekko"
@@ -19,11 +23,24 @@ repositories {
     mavenCentral()
 }
 
+val springGrpcVersion = "0.11.0"
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.grpc:spring-grpc-dependencies:$springGrpcVersion")
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
     implementation("org.springframework.kafka:spring-kafka")
+
+    implementation("com.google.protobuf:protobuf-java")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.kafka:spring-kafka-test")
@@ -38,4 +55,12 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+protobuf {
+    protoc {
+        val protobufVersion = (extensions.getByName("dependencyManagement") as DependencyManagementExtension)
+            .importedProperties["protobuf-java.version"]
+        artifact = "com.google.protobuf:protoc:$protobufVersion"
+    }
 }
