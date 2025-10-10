@@ -43,6 +43,9 @@ services:
       - "4002:4002"
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      kafka:
+        condition: service_healthy
     networks:
       - internal
     depends_on:
