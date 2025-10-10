@@ -17,19 +17,22 @@ class BillingServiceGrpcClient(
     @Value("\${billing.service.grpc.port:9001}") serverPort: Int
 ) : Closeable {
     private val log = LoggerFactory.getLogger(BillingServiceGrpcClient::class.java)
-    private val stub: BillingServiceGrpcKt.BillingServiceCoroutineStub
-    private val channel: ManagedChannel
 
     init {
         log.info("Connecting to Billing gRPC service at $serverAddress:$serverPort")
+    }
 
-        channel = ManagedChannelBuilder
+    private val channel: ManagedChannel by lazy {
+        ManagedChannelBuilder
             .forAddress(serverAddress, serverPort)
             .usePlaintext()
             .build()
-
-        stub = BillingServiceGrpcKt.BillingServiceCoroutineStub(channel)
     }
+
+    private val stub: BillingServiceGrpcKt.BillingServiceCoroutineStub by lazy {
+        BillingServiceGrpcKt.BillingServiceCoroutineStub(channel)
+    }
+
 
     suspend fun createBillingAccount(patientId: String, name: String, email: String): BillingResponse {
         val request = BillingRequest.newBuilder()

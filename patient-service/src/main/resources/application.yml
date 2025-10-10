@@ -20,6 +20,13 @@ server:
 #    init:
 #      mode: always
 
+
 logging:
   level:
     root: info
+
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
