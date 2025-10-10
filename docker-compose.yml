@@ -64,6 +64,12 @@ services:
       - patient-service-db-data:/var/lib/postgresql/data
     networks:
       - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin_user -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   kafka:
     image: apache/kafka:4.1.0
