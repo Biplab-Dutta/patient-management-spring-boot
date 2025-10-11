@@ -4,8 +4,6 @@ services:
       context: ./patient-service
     image: patient-service:latest
     container_name: patient-service
-    ports:
-      - "4000:4000"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://patient-service-db:5432/db
       SPRING_DATASOURCE_USERNAME: admin_user
