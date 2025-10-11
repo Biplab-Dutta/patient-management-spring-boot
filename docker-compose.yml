@@ -80,6 +80,26 @@ services:
       retries: 5
       start_period: 10s
 
+  postgres-auth:
+    image: postgres:18
+    container_name: auth-service-db
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5001:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin_user -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   kafka:
     image: apache/kafka:3.9.1
     container_name: kafka
@@ -126,3 +146,4 @@ networks:
 
 volumes:
   patient-service-db-data:
+  auth-db-data:
