@@ -33,7 +33,7 @@ class AuthController(
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
 
-        return if (authService.validateToken(token) != null)
+        return if (authService.validateToken(token))
             ResponseEntity.ok().build()
         else
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
