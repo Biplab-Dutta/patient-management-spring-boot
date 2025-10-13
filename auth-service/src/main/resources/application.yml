@@ -1,5 +1,8 @@
 spring:
   application:
     name: auth-service
+jwt:
+  # Close your eyes... Secret keys here... Don’t judge my laziness.
+  secret: 7KnkFOC9nqrLjbAUMXWVBFc+r/ucHFxGV1Nywmyppi4=
 server:
   port: 4005
