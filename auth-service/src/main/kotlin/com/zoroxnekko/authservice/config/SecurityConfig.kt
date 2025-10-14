@@ -18,15 +18,14 @@ class SecurityConfig(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }
-
-            .authorizeHttpRequests { auth ->
-                auth
-                    .requestMatchers("/login", "/validate").permitAll()
-                    .anyRequest().authenticated()
+            .authorizeHttpRequests {
+                it
+                    .requestMatchers("/login", "/validate")
+                    .permitAll()
+                    .anyRequest()
+                    .fullyAuthenticated()
             }
-
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
