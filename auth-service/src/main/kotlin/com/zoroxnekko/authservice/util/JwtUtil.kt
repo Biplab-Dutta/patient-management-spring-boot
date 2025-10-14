@@ -43,4 +43,5 @@ class JwtUtil(
             throw JwtException("Invalid JWT", e)
         }
     }
+    fun getSecretKey(): SecretKey = secretKey
 }
