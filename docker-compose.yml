@@ -60,6 +60,23 @@ services:
       patient-service:
         condition: service_started
 
+  auth-service:
+    build:
+      context: ./auth-service
+    image: auth-service:latest
+    container_name: auth-service
+    environment:
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-service-db:5432/db
+      SPRING_DATASOURCE_USERNAME: admin_user
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: always
+    networks:
+      - internal
+    depends_on:
+      postgres-auth:
+        condition: service_healthy
+
   postgres:
     image: postgres:18
     container_name: patient-service-db
@@ -71,6 +88,26 @@ services:
       - "5432:5432"
     volumes:
       - patient-service-db-data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin_user -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  postgres-auth:
+    image: postgres:18
+    container_name: auth-service-db
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5001:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
     networks:
       - internal
     healthcheck:
@@ -126,3 +163,4 @@ networks:
 
 volumes:
   patient-service-db-data:
+  auth-db-data:
